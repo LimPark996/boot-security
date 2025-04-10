@@ -28,4 +28,9 @@ public class MemoServiceImpl implements MemoService {
     public void deleteAll() {
         memoMapper.deleteAll();
     }
+
+    @Override
+    public void deleteById(Long id) {
+        memoMapper.deleteById(id);
+    }
 }

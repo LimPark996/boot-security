@@ -22,4 +22,7 @@ public interface MemoMapper {
     // TIL : 소프트 딜리트 (Soft Delete) <-> 하드 딜리트 (Hard Delete)
     @Delete("DELETE FROM memo")
     void deleteAll();
+
+    @Delete("DELETE FROM memo WHERE id = (#{id})")
+    void deleteById(Long id);
 }

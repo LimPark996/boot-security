@@ -10,4 +10,6 @@ public interface MemoService {
     void create(Memo memo) throws Exception;
 
     void deleteAll();
+
+    void deleteById(Long id);
 }
