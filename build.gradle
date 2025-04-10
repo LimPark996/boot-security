@@ -19,7 +19,8 @@ repositories {
 
 dependencies {
     // 세큐리티, (중략)
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // 일단... 나와... 문제가 지멋대로 암호와 유저네임을 정해(?)
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 //    마이바티스, 미안하다 조직의 명령이다. 네가 희생해라... (기른다매!!! 키워준다매!!!)

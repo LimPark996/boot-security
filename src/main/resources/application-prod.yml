@@ -1,7 +1,18 @@
 spring:
   # 데이터베이스 연결 설정
   datasource: # 여러 DBaaS에서 가져오기
-    url: # 데이터베이스 URL
-    username: # 데이터베이스 사용자 이름
-    password: # 데이터베이스 비밀번호
-    driver-class-name: # PostgreSQL 드라이버 클래스 이름
+    url: ${MYSQL_URL} # 데이터베이스 URL
+    username: ${MYSQL_USER} # 데이터베이스 사용자 이름
+    password: ${MYSQL_PASSWORD} # 데이터베이스 비밀번호
+    driver-class-name: org.postgresql.Driver # PostgreSQL 드라이버 클래스 이름
+  # 시큐리티
+  security:
+    user:
+      name: ${SECURITY_NAME}
+      password: ${SECURITY_PASSWORD}
+# 로깅 설정
+logging:
+  level:
+#    org.example.bootsecurity.model.mapper: DEBUG # mapper 패키지의 로깅 레벨을 DEBUG로 설정 (DEV)
+    org.example.bootsecurity.model.mapper: ERROR # mapper 패키지의 로깅 레벨을 ERROR로 설정
+    # 너무 쓸데없는 많은 로그 방지

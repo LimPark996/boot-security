@@ -6,10 +6,7 @@ import org.example.bootsecurity.model.mapper.MemoMapper;
 import org.example.bootsecurity.service.MemoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -64,10 +61,11 @@ public class MainController {
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable("id") Long id, @RequestAttribute String text, RedirectAttributes redirectAttributes) {
+    public String update(@PathVariable("id") Long id, @RequestParam String text, RedirectAttributes redirectAttributes) {
         Memo oldMemo = memoService.findById(id);
         Memo newMemo = new Memo(oldMemo.id(), text, oldMemo.createdAt());
         memoService.update(newMemo);
+        redirectAttributes.addFlashAttribute("msg", "정상적으로 수정되었습니다!");
         return "redirect:/";
     }
 }
