@@ -33,4 +33,14 @@ public class MemoServiceImpl implements MemoService {
     public void deleteById(Long id) {
         memoMapper.deleteById(id);
     }
+
+    @Override
+    public Memo findById(Long id) {
+        return memoMapper.findById(id);
+    }
+
+    @Override
+    public void update(Memo newMemo) {
+        memoMapper.update(newMemo);
+    }
 }
