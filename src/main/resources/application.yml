@@ -17,7 +17,3 @@ spring:
     type-aliases-package: org.example.bootsecurity.model.domain # 도메인 객체 패키지 경로
     configuration:
       map-underscore-to-camel-case: true # 언더스코어 표기법을 카멜 케이스 표기법으로 자동 변환
-# 로깅 설정
-logging:
-  level:
-    org.example.bootsecurity.model.mapper: DEBUG # mapper 패키지의 로깅 레벨을 DEBUG로 설정
