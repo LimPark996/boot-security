@@ -29,6 +29,6 @@ public interface MemoMapper {
     @Select("SELECT * FROM memo WHERE id = (#{id})")
     Memo findById(Long id);
 
-    @Update("UPDATE memo SET text = (#{newMemo.text}) WHERE id = (#{newMemo.id})")
-    void update(Memo newMemo);
+    @Update("UPDATE memo SET text = (#{text}) WHERE id = (#{id})")
+    void update(Memo memo);
 }
