@@ -5,24 +5,18 @@ spring:
   profiles:
     active: dev
     # 배포할 때 Docker를 사용해서 prod로 지정하기
-  # 데이터베이스 연결 설정
-  datasource: # 여러 DBaaS에서 가져오기
-    url: jdbc:postgresql://localhost:5432/your_database # 데이터베이스 URL
-    username: your_username # 데이터베이스 사용자 이름
-    password: your_password # 데이터베이스 비밀번호
-    driver-class-name: org.postgresql.Driver # PostgreSQL 드라이버 클래스 이름
-    # 커넥션 풀 관련
-#    type: com.zaxxer.hikari.HikariDataSource
-#    hikari:
-#      maximum-pool-size: 10 # 최대 커넥션 수
-#      minimum-idle: 5 # 최소 유휴 커넥션 수
+    # 커넥션 풀 관련 (참고 -> TIL하면 좋음)
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 10 # 최대 커넥션 수
+      minimum-idle: 5 # 최소 유휴 커넥션 수
   # MyBatis 설정
   mybatis:
     mapper-locations: classpath:mapper/*.xml # 매퍼 XML 파일 위치 설정
-    type-aliases-package: com.example.yourproject.domain # 도메인 객체 패키지 경로
+    type-aliases-package: com.example.bootsecurity.model.domain # 도메인 객체 패키지 경로
     configuration:
       map-underscore-to-camel-case: true # 언더스코어 표기법을 카멜 케이스 표기법으로 자동 변환
 # 로깅 설정
 logging:
   level:
-    com.example.yourproject.mapper: DEBUG # mapper 패키지의 로깅 레벨을 DEBUG로 설정
+    com.example.bootsecurity.model.mapper: DEBUG # mapper 패키지의 로깅 레벨을 DEBUG로 설정

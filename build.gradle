@@ -23,7 +23,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 //    마이바티스, 미안하다 조직의 명령이다. 네가 희생해라... (기른다매!!! 키워준다매!!!)
-//    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
+    // 석방 -> 이제 내가 날뛸 차례인가? -> 정확히 (연재 기준) N0화 후쯤 그냥 동료되어서 설명하고 있음.
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.postgresql:postgresql'
