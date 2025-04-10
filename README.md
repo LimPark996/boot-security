@@ -198,5 +198,5 @@ Supabase DB에서 전체 삭제
 redirect:/ (GET /)로 돌아감 → 메모 목록 조회 (비어 있음)
 ```
 
-- 삭제 메시지가 index.html에서 "<p th:text="${msg}">" 를 통해 출력됨
+- 삭제 메시지가 index.html에서 p th:text="${msg}" 를 통해 출력됨
 - 데이터는 없으므로 메모 리스트는 빈 상태로 표시됨
