@@ -25,4 +25,10 @@ public interface MemoMapper {
 
     @Delete("DELETE FROM memo WHERE id = (#{id})")
     void deleteById(Long id);
+
+    @Select("SELECT * FROM memo WHERE id = (#{id})")
+    Memo findById(Long id);
+
+    @Update("UPDATE memo SET text = (#{newMemo.text}) WHERE id = (#{newMemo.id})")
+    void update(Memo newMemo);
 }

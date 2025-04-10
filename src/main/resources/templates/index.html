@@ -16,8 +16,9 @@
     <ul>
          <li th:each="memo : ${memoList}">
              <span th:text="${memo.text}"></span>
-             <form><button>수정</button></form>
-             <form th:method="post" th:action="@{/edit/{id}(id=${memo.id()})}"><button>삭제</button></form>
+             <a th:href="@{/update/{id}(id=${memo.id})}">수정</a>
+             <!-- 갑자기 잘 안 되면 수파베이스를 리셋할 것! -->
+             <form th:method="post" th:action="@{/delete/{id}(id=${memo.id()})}"><button>삭제</button></form>
          </li>
     </ul>
 </body>
