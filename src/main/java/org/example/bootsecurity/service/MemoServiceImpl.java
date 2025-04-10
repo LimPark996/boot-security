@@ -23,4 +23,9 @@ public class MemoServiceImpl implements MemoService {
     public void create(Memo memo) throws Exception {
         memoMapper.insert(memo);
     }
+
+    @Override
+    public void deleteAll() {
+        memoMapper.deleteAll();
+    }
 }

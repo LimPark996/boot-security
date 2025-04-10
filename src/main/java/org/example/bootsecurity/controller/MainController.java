@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 
@@ -31,6 +32,14 @@ public class MainController {
 //        Memo memo = new Memo(0L, form.getText(), "");
         Memo memo = Memo.fromText(form.getText());
         memoService.create(memo);
+        return "redirect:/";
+    }
+
+    @PostMapping("/delete-all")
+    public String deleteAll(RedirectAttributes redirectAttributes) throws Exception {
+        memoService.deleteAll();
+        // addAttribute -> 주소창 => controller가 한 번 더 받아줘야함
+        redirectAttributes.addFlashAttribute("msg", "전체 삭제");
         return "redirect:/";
     }
 }
