@@ -13,6 +13,12 @@
         <a th:href="@{/add}">등록</a>
     </nav>
     <p th:text="${msg}"></p>
-    <p th:text="${memoList}"></p>
+    <ul>
+         <li th:each="memo : ${memoList}">
+             <span th:text="${memo.text}"></span>
+             <form><button>수정</button></form>
+             <form><button>삭제</button></form>
+         </li>
+    </ul>
 </body>
 </html>
