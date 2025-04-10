@@ -119,6 +119,25 @@ void insert(Memo memo);
 - 다시 GET / 요청 발생 → 메모 목록 조회 후 index.html 렌더링
 
 
+🔄 전체 요청 흐름 요약
+
+```plaintext
+🧑 사용자 (브라우저)
+   ↓ (폼 데이터 전송: text)
+MainController (POST /add)
+   ↓
+Memo.fromText()  ← 임시 생성자
+   ↓
+MemoServiceImpl.create()
+   ↓
+MemoMapper.insert()
+   ↓
+Supabase DB에 저장
+   ↓
+redirect:/ (GET /)로 돌아감 → 메모 목록 다시 조회
+```
+
+
 **✅ POST /delete-all 요청 시 End to End 흐름 설명 (전체 삭제)**
 
 1. 사용자 (브라우저)
@@ -162,5 +181,22 @@ void deleteAll();
 5. redirect:/
 
 - 삭제 완료 후 GET / 요청으로 리다이렉트
+
+🔄 전체 요청 흐름 요약
+
+```plaintext
+🧑 사용자 (브라우저)
+   ↓ (버튼 클릭)
+MainController (POST /delete-all)
+   ↓
+MemoServiceImpl.deleteAll()
+   ↓
+MemoMapper.deleteAll()
+   ↓
+Supabase DB에서 전체 삭제
+   ↓
+redirect:/ (GET /)로 돌아감 → 메모 목록 조회 (비어 있음)
+```
+
 - 삭제 메시지가 index.html에서 <p th:text="${msg}">를 통해 출력됨
 - 데이터는 없으므로 메모 리스트는 빈 상태로 표시됨
