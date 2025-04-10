@@ -5,7 +5,8 @@ spring:
   profiles:
     active: dev
     # 배포할 때 Docker를 사용해서 prod로 지정하기
-    # 커넥션 풀 관련 (참고 -> TIL하면 좋음)
+  # 커넥션 풀 관련 (참고 -> TIL하면 좋음)
+  datasource:
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       maximum-pool-size: 10 # 최대 커넥션 수
