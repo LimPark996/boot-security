@@ -54,4 +54,9 @@ public class MainController {
         redirectAttributes.addFlashAttribute("msg", "전체 삭제");
         return "redirect:/";
     }
+
+    @GetMapping("/update/{id}")
+    public String update(@PathVariable("id") Long id, Model model) {
+        return "update";
+    }
 }
