@@ -200,3 +200,189 @@ redirect:/ (GET /)로 돌아감 → 메모 목록 조회 (비어 있음)
 
 - 삭제 메시지가 index.html에서 p th:text="${msg}" 를 통해 출력됨
 - 데이터는 없으므로 메모 리스트는 빈 상태로 표시됨
+
+**✅ POST /delete/{id} 요청 시 End to End 흐름 설명 (메모 삭제)**
+
+1. 🧑 사용자 (브라우저)
+
+- "삭제" 버튼 클릭 → 해당 메모의 id를 포함한 POST /delete/{id} 요청 발생
+
+2. 📍 MainController.delete() 호출
+
+``` java
+@PostMapping("/delete/{id}")
+public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+    String msg = "%d를 정상적으로 삭제하였습니다.".formatted(id);
+    redirectAttributes.addFlashAttribute("msg", msg);
+    memoService.deleteById(id);
+    return "redirect:/";
+}
+```
+
+- URL에서 id 값을 PathVariable로 받음
+- 삭제 메시지를 FlashAttribute로 모델에 임시 저장
+- 서비스 계층에 deleteById(id) 요청
+
+3. 📍 MemoServiceImpl.deleteById()
+
+```java
+@Override
+public void deleteById(Long id) {
+    memoMapper.deleteById(id);
+}
+```
+
+- 실제 DB 작업은 Mapper에 위임
+
+4. 📍 MemoMapper.deleteById()
+
+```java
+@Delete("DELETE FROM memo WHERE id = (#{id})")
+void deleteById(Long id);
+```
+
+- 해당 id의 메모를 DB에서 삭제
+
+5. 📍 redirect:/
+
+- 삭제 후 홈 화면으로 리다이렉트
+
+- → GET / 다시 요청되어 메모 목록 재조회
+
+🔄 전체 요청 흐름 요약
+
+```scss
+🧑 사용자 (POST /delete/{id})
+   ↓
+MainController.delete()
+   ↓
+MemoServiceImpl.deleteById()
+   ↓
+MemoMapper.deleteById()
+   ↓
+Supabase DB 삭제
+   ↓
+redirect:/ → 다시 GET /
+```
+
+**✅ GET /update/{id} 요청 시 End to End 흐름 설명 (수정 폼 보여주기)**
+
+1. 🧑 사용자 (브라우저)
+
+- 메모 옆에 "수정" 버튼 클릭 → /update/1 같은 링크로 이동
+
+2. 📍 MainController.update() 호출 (GET)
+
+```java
+@GetMapping("/update/{id}")
+public String update(@PathVariable("id") Long id, Model model) {
+    Memo memo = memoService.findById(id);
+    model.addAttribute("memo", memo);
+    return "update";
+}
+```
+
+- URL에서 id 추출 → memoService.findById() 호출
+- 조회된 메모를 모델에 memo 이름으로 담음
+- update.html에 넘김
+
+3. 📍 MemoServiceImpl.findById()
+
+```java
+@Override
+public Memo findById(Long id) {
+    return memoMapper.findById(id);
+}
+```
+
+4. 📍 MemoMapper.findById()
+
+```java
+@Select("SELECT * FROM memo WHERE id = (#{id})")
+Memo findById(Long id);
+```
+
+- DB에서 해당 id의 메모를 조회해서 반환
+
+5. 📍 반환 후 → update.html 렌더링
+
+- memo 객체가 화면에 출력됨 (form input에 들어감)
+
+🔄 전체 요청 흐름 요약
+
+```scss
+🧑 사용자 (GET /update/{id})
+   ↓
+MainController.update() (GET)
+   ↓
+MemoServiceImpl.findById()
+   ↓
+MemoMapper.findById()
+   ↓
+Supabase에서 메모 조회
+   ↓
+update.html 렌더링 + memo 데이터 바인딩
+```
+
+**✅ POST /update/{id} 요청 시 End to End 흐름 설명 (메모 수정)**
+
+1. 🧑 사용자 (브라우저)
+
+- 수정 완료 후 "제출" 버튼 클릭 → form에 입력된 text와 함께 POST /update/{id} 요청
+
+2. 📍 MainController.update() 호출 (POST)
+
+```java
+@PostMapping("/update/{id}")
+public String update(@PathVariable("id") Long id, @RequestParam String text, RedirectAttributes redirectAttributes) {
+    Memo oldMemo = memoService.findById(id);
+    Memo newMemo = new Memo(oldMemo.id(), text, oldMemo.createdAt());
+    memoService.update(newMemo);
+    redirectAttributes.addFlashAttribute("msg", "정상적으로 수정되었습니다!");
+    return "redirect:/";
+}
+```
+
+- id로 기존 메모 조회
+- 새로운 text를 반영한 새 Memo 객체 생성
+- memoService.update() 호출
+
+3. 📍 MemoServiceImpl.update()
+
+```java
+@Override
+public void update(Memo newMemo) {
+    memoMapper.update(newMemo);
+}
+```
+
+4. 📍 MemoMapper.update()
+
+```java
+@Update("UPDATE memo SET text = (#{text}) WHERE id = (#{id})")
+void update(Memo memo);
+```
+
+- id로 해당 메모의 text 필드를 업데이트
+
+5. 📍 redirect:/
+
+- 수정 후 홈 화면으로 돌아감
+- → GET / 다시 요청되어 수정 결과가 반영된 메모 목록 출력
+
+🔄 전체 요청 흐름 요약
+```scss
+🧑 사용자 (POST /update/{id})
+   ↓ (입력값: text)
+MainController.update() (POST)
+   ↓
+MemoServiceImpl.findById()
+   ↓
+MemoServiceImpl.update()
+   ↓
+MemoMapper.update()
+   ↓
+Supabase DB 수정
+   ↓
+redirect:/ → 다시 GET /
+```
