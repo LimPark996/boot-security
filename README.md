@@ -505,6 +505,19 @@ redirect:/ → 다시 GET /
 **✅ 메모 생성 페이지**
 
 ```html
+    <section>
+        <form th:action="@{/add}" th:method="post" th:object="${memoForm}">
+            <label>내용 :
+                <input th:field="*{text}">
+            </label>
+            <button>등록</button>
+        </form>
+    </section>
+```
+
+**설명**
+
+```html
 <form th:action="@{/add}" th:method="post" th:object="${memoForm}">
 🟡 의미:
 - 폼(form)을 만들어서 서버에 메모를 보낼 거예요.
