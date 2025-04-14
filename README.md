@@ -439,6 +439,21 @@ redirect:/ → 다시 GET /
 ---
 
 ```html
+<ul>
+         <li th:each="memo : ${memoList}">
+             <span th:text="${memo.text}"></span>
+             <a th:href="@{/update/{id}(id=${memo.id})}">수정</a>
+             <!-- 갑자기 잘 안 되면 수파베이스를 리셋할 것! -->
+             <form th:method="post" th:action="@{/delete/{id}(id=${memo.id()})}"><button>삭제</button></form>
+         </li>
+    </ul>
+```
+
+**설명**
+
+---
+
+```html
 <li th:each="memo : ${memoList}">
 ```
 
