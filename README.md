@@ -388,6 +388,7 @@ redirect:/ → 다시 GET /
 ```
 
 ---
+---
 
 **✅ (타임리프)전체 구조부터 먼저 보기**
 
@@ -397,6 +398,37 @@ redirect:/ → 다시 GET /
 - 왜냐면: 우리가 만든 서버(Spring Boot)에서 보낸 글 데이터를 화면에 보여줘야 하니까요.
 
 ---
+
+**✅ 메모 홈화면 페이지**
+
+```html
+<!--index.html-->
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>메모</title>
+</head>
+<body>
+    <nav>
+        <form th:method="post" th:action="@{/delete-all}"><button>전체 삭제</button></form>
+        <a th:href="@{/add}">등록</a>
+    </nav>
+    <p th:text="${msg}"></p>
+    <ul>
+         <li th:each="memo : ${memoList}">
+             <span th:text="${memo.text}"></span>
+             <a th:href="@{/update/{id}(id=${memo.id})}">수정</a>
+             <!-- 갑자기 잘 안 되면 수파베이스를 리셋할 것! -->
+             <form th:method="post" th:action="@{/delete/{id}(id=${memo.id()})}"><button>삭제</button></form>
+         </li>
+    </ul>
+</body>
+</html>
+```
 
 ```html
 <form th:method="post" th:action="@{/delete-all}">
@@ -504,20 +536,36 @@ redirect:/ → 다시 GET /
 
 ---
 
-**🧠 타임리프 핵심 표현 요약**
-
-| 표현 | 쉽게 설명하면 |
-|------|-----------------|
-| `th:method="post"` | "서버야, 나 정보를 보내려고 해 (숨김 방식으로!)" |
-| `th:action="@{/주소}"` | "서버야, 이 주소로 요청을 보낼게!" |
-| `th:href="@{/주소}"` | "클릭하면 이 주소로 이동할게!" |
-| `${변수}` | "서버에서 받은 데이터야!" |
-| `th:text="${변수}"` | "이 데이터 글씨로 화면에 보여줘!" |
-| `th:each="item : ${list}"` | "목록이야! 하나씩 꺼내서 화면에 보여줘!" |
-
----
-
 **✅ 메모 생성 페이지**
+
+```html
+<!--add.html-->
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>메모 생성</title>
+</head>
+<body>
+    <nav>
+        <a th:href="@{/}">홈으로</a>
+    </nav>
+    <p th:text="${msg}"></p>
+    <section>
+        <form th:action="@{/add}" th:method="post" th:object="${memoForm}">
+            <label>내용 :
+                <input th:field="*{text}">
+            </label>
+            <button>등록</button>
+        </form>
+    </section>
+</body>
+</html>
+```
+---
 
 ```html
     <section>
@@ -534,6 +582,7 @@ redirect:/ → 다시 GET /
 
 ```html
 <form th:action="@{/add}" th:method="post" th:object="${memoForm}">
+```
 🟡 의미:
 - 폼(form)을 만들어서 서버에 메모를 보낼 거예요.
 - 서버 주소는 /add
@@ -542,52 +591,79 @@ redirect:/ → 다시 GET /
 
 🔵 진짜 쉬운 말:
 "메모 새로 작성해서 서버에 보내줘!" 라는 역할을 하는 폼이에요
-```
 
 ```html
 <input th:field="*{text}">
+```
 🟡 의미:
 - memoForm 안에 있는 text라는 필드와 연결돼요.
 - 사용자가 여기에 메모 내용을 입력하게 돼요
 
 🔵 진짜 쉬운 말:
 "여기다가 메모 내용을 적으세요!" 라고 하는 입력칸이에요
-```
 
 ```html
 <button>등록</button>
+```
 🟡 의미:
 - 위에 입력한 내용을 서버로 보내는 버튼이에요
 
 🔵 진짜 쉬운 말:
 "작성 완료! 등록해주세요~" 누르는 버튼이에요
-```
 
 ---
 
 ```html
 <p th:text="${msg}"></p>
+```
 🟡 의미:
 - 서버에서 준 메시지를 보여줘요
 - 예: "메모가 등록되었습니다!" 같은 알림
 
 🔵 진짜 쉬운 말:
 "방금 뭐 했는지 알려주는 공간이에요!"
-```
 
 ```html
 <a th:href="@{/}">홈으로</a>
+```
 🟡 의미:
 - 메인 화면(/)으로 가는 링크예요
 
 🔵 진짜 쉬운 말:
 "다 썼으면 홈으로 돌아가요~" 라고 안내하는 버튼이에요
-```
 
 ---
 
 **✅ 메모 수정 페이지**
 
+```html
+<!--update.html-->
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>메모 수정</title>
+</head>
+<body>
+    <nav>
+        <a th:href="@{/}">홈으로</a>
+    </nav>
+    <p th:text="${msg}"></p>
+    <section>
+        <form th:action="@{/update/{id}(id=${memo.id()})}" th:method="post">
+            <label>내용 :
+                <input th:name="text" th:value="${memo.text}">
+            </label>
+            <button>수정</button>
+        </form>
+    </section>
+</body>
+</html>
+```
+---
 ```html
     <section>
         <form th:action="@{/update/{id}(id=${memo.id()})}" th:method="post">
@@ -605,6 +681,7 @@ redirect:/ → 다시 GET /
 
 ```html
 <form th:action="@{/update/{id}(id=${memo.id()})}" th:method="post">
+```
 🟡 의미:
 - 서버에 메모를 수정해서 보낼 폼이에요
 - /update/3 이런 식으로 id 값을 주소에 넣어서 요청해요
@@ -612,46 +689,45 @@ redirect:/ → 다시 GET /
 
 🔵 진짜 쉬운 말:
 "이 메모(id=3)를 이렇게 고쳐서 서버에 보내줄게요!" 하는 폼이에요
-```
 
 ```html
 <input th:name="text" th:value="${memo.text}">
+```
 🟡 의미:
 - input의 name을 "text"로 하고
 - 기존 메모 내용인 memo.text를 미리 넣어줄 거예요
 
 🔵 진짜 쉬운 말:
 "원래 내용이 들어가 있고, 사용자가 이걸 수정할 수 있어요"
-```
 
 ```html
 <button>수정</button>
+```
 🟡 의미:
 - 위에서 수정한 내용을 서버에 보낼 버튼이에요
 
 🔵 진짜 쉬운 말:
 "수정 완료! 서버에 알려줘~" 하는 버튼이에요
-```
 
 ---
 
 ```html
 <p th:text="${msg}"></p>
+```
 🟡 의미:
 - 수정 성공/실패 등 서버 메시지를 보여줘요
 
 🔵 진짜 쉬운 말:
 "수정했는지 잘 안됐는지 결과 알려주는 공간이에요"
-```
 
 ```html
 <a th:href="@{/}">홈으로</a>
+```
 🟡 의미:
 - 다시 홈(/)으로 가는 링크예요
 
 🔵 진짜 쉬운 말:
 "수정 끝났으면 다시 메인으로 가요~" 하는 버튼이에요
-```
 
 ---
 
