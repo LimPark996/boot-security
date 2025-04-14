@@ -587,6 +587,21 @@ redirect:/ → 다시 GET /
 **✅ 메모 수정 페이지**
 
 ```html
+    <section>
+        <form th:action="@{/update/{id}(id=${memo.id()})}" th:method="post">
+            <label>내용 :
+                <input th:name="text" th:value="${memo.text}">
+            </label>
+            <button>수정</button>
+        </form>
+    </section>
+```
+
+**설명**
+
+---
+
+```html
 <form th:action="@{/update/{id}(id=${memo.id()})}" th:method="post">
 🟡 의미:
 - 서버에 메모를 수정해서 보낼 폼이에요
